@@ -41,15 +41,13 @@ public class BookRepositoryTest {
         book2.setAuthor("J.R.R. Tolkien");
         book2.setGenre("Fantasy");
         bookRepository.save(book2);
-
-        // Act
         List<Book> books = bookRepository.findAll(); // on récupère tous les livres
         Optional<Book> found = books.stream()
                 .filter(b -> b.getTitle().equals("Harry Potter"))
                 .findFirst();
 
         // Assert
-        assertTrue(found.isPresent());
+        assertFalse(found.isPresent());
         assertEquals("J.K. Rowling", found.get().getAuthor());
     }
 }
