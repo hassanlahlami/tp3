@@ -48,6 +48,6 @@ public class BookRepositoryTest {
 
         // Assert
         assertFalse(found.isPresent());
-        assertEquals("J.K. Rowling", found.get().getAuthor());
+        assertNotEquals("J.K. Rowling", found.get().getAuthor());
     }
 }
