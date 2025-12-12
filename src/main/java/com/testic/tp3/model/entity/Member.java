@@ -1,9 +1,8 @@
-package com.testic.tp3;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+package com.testic.tp3.model.entity;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -16,4 +15,6 @@ public class Member {
     private String name;
     private String address;
     private String phoneNumber;
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Loan> loans;
 }

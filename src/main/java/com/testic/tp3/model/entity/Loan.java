@@ -1,9 +1,6 @@
-package com.testic.tp3;
+package com.testic.tp3.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -18,6 +15,11 @@ public class Loan {
 
     private LocalDate loanDate;
     private LocalDate returnDate;
+    @ManyToOne
+    @JoinColumn(name = "book_id")
+    private Book book;
 
-    // Getters, setters, constructeurs, etc.
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 }

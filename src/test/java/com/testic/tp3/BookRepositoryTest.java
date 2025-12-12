@@ -1,53 +1,44 @@
 package com.testic.tp3;
 
+import com.testic.tp3.model.entity.Book;
+import com.testic.tp3.repository.BookRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
+
 public class BookRepositoryTest {
 
     @Autowired
-    private BookRepository bookRepository;
+    private BookRepository repository;
 
     @Test
-    void testCreateBook() {
+    void testSaveAndFind() {
         Book book = new Book();
-        book.setTitle("Test Title");
-        book.setAuthor("Author");
-        book.setGenre("Genre");
+        book.setTitle("Spring Boot");
+        book.setAuthor("Author 1");
+        book.setGenre("Programming");
 
-        Book saved = bookRepository.save(book);
+        repository.save(book);
 
-        assertNotNull(saved.getId());
-        assertEquals("Test Title", saved.getTitle());
+        List<Book> books = repository.findAll();
+        assertEquals(1, books.size());
+        assertEquals("Spring Boot", books.get(0).getTitle());
     }
+
     @Test
-    void testFindBookByTitle() {
-        // Arrange
-        Book book1 = new Book();
-        book1.setTitle("Harry Potter");
-        book1.setAuthor("J.K. Rowling");
-        book1.setGenre("Fantasy");
-        bookRepository.save(book1);
-
-        Book book2 = new Book();
-        book2.setTitle("The Hobbit");
-        book2.setAuthor("J.R.R. Tolkien");
-        book2.setGenre("Fantasy");
-        bookRepository.save(book2);
-        List<Book> books = bookRepository.findAll(); // on récupère tous les livres
-        Optional<Book> found = books.stream()
-                .filter(b -> b.getTitle().equals("Harry Potter"))
-                .findFirst();
-
-        // Assert
-        assertFalse(!found.isPresent());
-        assertEquals("J.K. Rowling", found.get().getAuthor());
+    void testDeleteBook() {
+        Book book = new Book();
+        book.setTitle("Java 101");
+        repository.save(book);
+        repository.deleteById(book.getId());
+        assertTrue(repository.findAll().isEmpty());
     }
 }
